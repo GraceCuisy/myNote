@@ -1,0 +1,232 @@
+你能学会什么?
+  熟悉一个项目的开发流程
+  学会模块化，组件化，工程化的开发模式
+  掌握使用vue-cli脚手架初始化vue.js项目
+  学会模拟json后端数据，实现前后端分离开发
+  学会es6+eslint的开发方式
+  掌握一些项目优化技巧
+vue插件或第三方库
+学会使用vue-router开发单页面应用
+学会使用axios与后端进行数据交互
+学会使用vuex管理应用组件状态
+学会使用swiper实现页面滑动的效果
+学会使用vue-lazyload实现图片懒加载
+学会使用mockjs模拟后台数据接口
+
+
+1.vue
+  node是一个基于chromev8引擎的JavaScript运行环境
+ 他使用了一个事件驱动，非阻塞式的模型，使其轻量又高效
+
+npm是JavaScript世界的包管理工具也是node.js平台的默认包管理工具
+
+  首先框架开发和环境需要node.js
+  vue的运行主要依赖于node的npm管理工具来实现
+  下载好node后 在cmd管理工具里面 输入node -v来查看node版本号，说明安装成功
+而vue是一套用于构架 用户界面的渐进式框架，他只关注与视图层，易上手，还有便于与第三方库的配合使用
+
+即node.js是一个运行环境，vue.js是目前比较流畅的前端开发框架
+
+ 安装淘宝镜像 由于npm是国外的使用起来比较慢，我们可以cnpm镜像来安装vue（yarn）
+ npm install -g cnpm --registry=https://registry.npm.taobao.org
+ 
+ 安装全局vue-cli脚手架
+  npm install -g @vue/cli
+  vue create shop-client
+  cd shop-client
+  npm run serve
+
+会自动生成
+node_mudules 
+public
+  index.html :主页面文件
+src
+ main.js应用入口文件
+babel.config.js:babel的配置文件
+vue.config.js ：vue的配置文件
+.gitignore:git版本管制忽略的配置
+package.json:应用包配置文件
+README.md:应用描述说明的readme文件
+
+目录设计
+  api ：ajax请求相关
+  components:非路由相关
+  mock:模拟数据
+  pages:路由组件
+  router:路由器
+  store：vuex相关
+  utils:工具函数模块
+  app.vue 应用组件
+  main.js 入口文件
+
+eslint 是一个代码规范检查工具
+ 支持es6和jsx 来自定义错误和提示
+ 进行语法错误校验，如不重要或丢失的标点，分号
+ 没法运行到的代码块
+ 未被使用的参数提醒
+ 漏掉的结束符
+ 检查变量的命名
+
+测试 npm run serve
+打包流程
+  打包命令 npm run build  会多了dist文件夹
+                 npm install -g serve
+                 serve dist -p 5000
+
+vue生命周期 
+ 生命周期是  每个vue实例在被创建时都要经过一些列的初始化过程，如设置数据监听，编译模板，将实例挂在到dom并在数据发生变化时更新dom,同时在这个过程中也会运行一些 生命周期钩子 的函数
+其作用是 让我们在控制整个vue实例过程中更容易形成好的逻辑
+
+第一次页面加载会触发 前四个钩子
+
+简述钩子应用场景
+beforeCreate :在组件实例初始化之后立即同步调用，没有数据劫持与监视
+可用于onload事件，即在加载实例时触发
+created:可通过this读取或修改data中的数据，已经完成了数据的劫持与监视，
+组件实例初始化完成的事件可写在这里面，如结束onload事件，异步请求也可以写在这里
+beforeMount:模板在内存中已编译但未挂在到页面上，不能通过ref找到对应的标签对象
+mounted：页面挂载元素，可以通过ref找到对应的标签对象，获取到dom节点
+beforeUpdate:数据更新，但界面还未更新
+updated:界面完成更新
+可用于对数据统一处理，在这里写上相应函数
+beforeDestory:在实例销毁之前调用，此时的实例是可以用的
+可用于做一个确认停止事件的确认框nextTick
+destoryed:vue实例销毁，数据绑定，事件监听也就没了，但是dom结构还在  即此时是一个静态界面
+deactivated:使用缓存组件，使组件失活
+activated：使用缓存组件，使组件激活，
+可用来取代之前的mounted 通常用于发送数据比较及时的场景
+errorCaptured:用于捕获子孙组件的错误，当捕获一个来自子孙组件错误时被调用此钩子会接受到三个参数 错误对象，发送错误的组件实例，以及一个包含错误来源信息的字符串
+可通过 return false 可以阻止错误向上冒泡
+
+组件通信
+ 父子之间
+  props ：实现父向子通信: 属性值是非函数
+                实现子向父通信: 属性值是函数
+  子->父 vue自定义事件：子组件$emit 来分发事件，父组件通过绑定自定义事件监听
+  如 element-ui的组件的事件监听用的也是自定义事件
+
+  $parent,$children与$ref
+    1). $refs
+        实现父组件向指定子组件通信
+        $refs是包含所有有ref属性的标签对象或组件对象的容器对象
+        使用: 通过 this.$refs.child 得到子组件对象, 从而可以直接更新其数据或调用其方法更新数据
+    2). $children
+        实现父组件向多个子组件通信
+        $children是所有直接子组件对象的数组
+        使用: 通过this.$children 遍历子组件对象, 从而可以更新多个子组件的数据
+    3). $parent
+        实现子组件向父组件通信
+        $parent是当前组件的父组件对象
+        使用: 通过this.$parent 得到父组件对象, 从而可以更新父组件的数据
+    应用: 在后台管理项目中使用了$refs
+
+  .sync（同步）
+    组件标签上的属性使用.sync：通过事件监听来接收子组件分发过来的数据并更新父组件的数据
+    父组件:
+            <child :money.sync="total"/>
+            <!-- 等价于 --> 
+            <Child :money="total" @update:money="total=$event"/> data () 
+           {
+              return {
+                total: 1000
+              }
+            },
+    子组件:
+            <button @click="$emit('update:money', money-100)">花钱</button>
+            props: ['money']
+    element-ui在有显示隐藏的组件上: Dialog / Drawer
+
+  插槽slot=>作用域插槽
+     实现父组件向子组件传递标签内容
+     什么情况下使用作用域插槽?
+        父组件需要向子组件传递标签结构内容
+        但决定父组件传递怎样标签结构的数据在子组件中
+     子组件:
+            <slot :row="item" :$index="index">  <!-- slot的属性会自动传递给父组件 -->
+            </slot>
+        父组件:
+            <template slot-scope="{row, $index}">
+                <span>{{$index+1}}</span> &nbsp;&nbsp;
+                <span :style="{color: $index%2===1 ? 'blue' : 'green'}" >{{row.text}}</span>
+            </template>
+    应用: element-ui中的Table组件
+
+  v-model（同步）
+    组件标签上的v-model本质：动态value属性与自定义input监听来接收子组件分发的数据更新父组件数据
+   父组件: 
+            <CustomInput v-model="name"/>
+            <!-- 等价于 -->
+            <CustomInput :value="name" @input="name=$event"/>
+  子组件: 
+            <input type="text" :value="value" @input="$emit('input', $event.target.value)">
+            props: ['value']
+如element-ui 的表单项相关组件都用了 v-model :Input / Select / Checkbox / Radio
+
+祖孙
+  如果仅仅是传递数据可以使用
+  $attrs与$listeners
+    1). $attrs
+        实现当前组件的父组件向当前组件的子组件通信
+        它是包含所有父组件传入的标签属性(排除props声明, class与style的属性)的对象
+        使用: 通过 v-bind="$attrs" 将父组件传入的n个属性数据传递给当前组件的子组件
+    2). $listeners
+        实现当前组件的子组件向当前组件的父组件通信
+        $listeners是包含所有父组件传入的自定义事件监听名与对应回调函数的对象
+        使用: 通过v-on="$listeners" 将父组件绑定给当前组件的事件监听绑定给当前组件的子组件
+    应用: 利用它封装了一个自定义的带hover文本提示的el-button
+    3). $ref
+        在普通dom元素上使用，引用就指向组件实例
+  provide与inject
+    1). 实现祖孙组件间直接通信
+    2). 使用
+        在祖组件中通过provide配置向后代组件提供数据
+        在后代组件中通过inject配置来声明接收数据
+    3). 注意:
+        不太建议在应用开发中使用, 一般用来封装vue插件
+        provide提供的数据本身不是响应式的 ==> 父组件更新了数据, 后代组件不会变化
+        provide提供的数据对象内部是响应式的 ==> 父组件更新了数据, 后代组件也会变化
+        应用: element-ui中的Form组件中使用了provide和inject
+
+ 兄弟或其他
+  全局事件总线 
+       将入口js中的vm作为全局事件总线对象: 
+            beforeCreate() {
+                Vue.prototype.$bus = this
+            }
+        分发事件/传递数据的组件: this.$bus.$emit('eventName', data)
+        处理事件/接收数据的组件: this.$bus.$on('eventName', (data) => {})
+  vuex
+    一个专门为vue应用程序设计的管理多组件共享状态数据的vue插件
+   在任意组件都可以通过 vuex中store的state来读取对象中的数据
+   任意组件都可以通过dispatch或commit来触发store去更新state中的数据
+
+vueRouter 
+  npm install -S vue-router
+  在router->index.js 需要引入store  但是在组件中不需要引入
+  因为在组件中她已经挂在了this.$store,可以直接使用
+
+vue双向数据绑定
+
+自定义组件
+
+
+2.uniapp相关
+ 他使用的是vue语法+小程序的标签和api
+
+3.微信小程序
+
+4.jquery
+
+5.es6和es5
+  promise
+  async的异步机制
+  通过什么方式来实现异步
+  async异步调用的话后台怎么来配合
+
+6.webpack
+
+7.axios
+
+8.模块化，组件化，工程化
+
+9.git相关
